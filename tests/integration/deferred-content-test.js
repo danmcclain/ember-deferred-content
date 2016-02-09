@@ -122,3 +122,39 @@ test('shows pending component when unresolved, hide when fulfilled or rejected',
       assert.equal(this.$('#pending').length, 0, 'hide the pending component when rejecting');
     });
 });
+
+test('shows settled component when settled, hide when unresolved', function(assert) {
+  assert.expect(4);
+
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+
+  this.render(hbs`
+    {{#deferred-content promise=promise as |d|}}
+      {{#d.settled}}<div id="settled">Settled</div>{{/d.settled}}
+    {{/deferred-content}}
+  `);
+
+  assert.equal(this.$('#settled').length, 0, 'hide the settled component when resolving');
+
+  deferred.resolve();
+
+  return wait()
+    .then(() => {
+      assert.equal(this.$('#settled').length, 1, 'display the settled component');
+    })
+    .then(() => {
+      deferred = RSVP.defer();
+      this.set('promise', deferred.promise);
+      return wait();
+    })
+    .then(() => {
+      assert.equal(this.$('#settled').length, 0, 'hide the settled component when rejecting');
+      deferred.reject();
+      return wait();
+    })
+    .then(() => {
+      assert.equal(this.$('#settled').length, 1, 'display the settled component');
+    });
+});
