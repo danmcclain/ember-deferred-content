@@ -1,1 +1,4 @@
-{{yield (hash pending=(component 'deferred-content/pending-content' promise=promise))}}
+{{yield (hash pending=(component 'deferred-content/pending-content' promise=promise)
+              fulfilled=(component 'deferred-content/fulfilled-content' promise=promise)
+        )
+}}
