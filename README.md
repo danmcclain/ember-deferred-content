@@ -48,8 +48,9 @@ content during the different states of your promise
 ## Compatibility
 
 This addon will work on Ember versions `2.3.x` and up only, due to use
-of the new `(hash` helper
-([details](http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper)).
+of [contextual
+components](http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_contextual-components)
+and the [`(hash` helper](http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper).
 
 
 ## Developing
