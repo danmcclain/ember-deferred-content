@@ -2,6 +2,9 @@
   "name": "ember-deferred-content",
   "version": "0.1.0",
   "description": "Fancy pants handling of async content",
+  "repository": "https://github.com/danmcclain/ember-deferred-content",
+  "bugs": "https://github.com/danmcclain/ember-deferred-content/issues",
+  "author": "Dan McClain <me@danmcclain.net>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -37,7 +40,9 @@
     "ember-try": "~0.0.8"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "promises",
+    "component"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
