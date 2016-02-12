@@ -1,7 +1,7 @@
 {
   "name": "ember-deferred-content",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "Fancy pants handling of async content",
   "directories": {
     "doc": "doc",
     "test": "tests"
