@@ -19,7 +19,7 @@ test('shows rejected component when rejected, hide when pending or rejected', fu
   this.set('promise', deferred.promise);
 
   this.render(hbs`
-    {{#deferred-content promise=promise as |d|}}
+    {{#deferred-content promise as |d|}}
       {{#d.rejected as |reason|}}<div id="rejected">Rejected: {{reason}}</div>{{/d.rejected}}
     {{/deferred-content}}
   `);
@@ -57,7 +57,7 @@ test('shows fulfilled component when fulfilled, hide when pending or rejected', 
   this.set('promise', deferred.promise);
 
   this.render(hbs`
-    {{#deferred-content promise=promise as |d|}}
+    {{#deferred-content promise as |d|}}
       {{#d.fulfilled as |content|}}<div id="fulfilled">Fulfilled: {{content}}</div>{{/d.fulfilled}}
     {{/deferred-content}}
   `);
@@ -95,7 +95,7 @@ test('shows pending component when unresolved, hide when fulfilled or rejected',
   this.set('promise', deferred.promise);
 
   this.render(hbs`
-    {{#deferred-content promise=promise as |d|}}
+    {{#deferred-content promise as |d|}}
       {{#d.pending}}<div id="pending">Pending</div>{{/d.pending}}
     {{/deferred-content}}
   `);
@@ -131,7 +131,7 @@ test('shows settled component when settled, hide when unresolved', function(asse
   this.set('promise', deferred.promise);
 
   this.render(hbs`
-    {{#deferred-content promise=promise as |d|}}
+    {{#deferred-content promise as |d|}}
       {{#d.settled}}<div id="settled">Settled</div>{{/d.settled}}
     {{/deferred-content}}
   `);

@@ -12,7 +12,7 @@ ember install ember-deferred-content
 
 ```hbs
   {{! This assumes that post has an async relationship called comments}}
-  {{#deferred-content promise=post.comments as |d|}}
+  {{#deferred-content post.comments as |d|}}
     {{#d.settled}}
       <h2>Comments</h2>
     {{/d.settled}}
