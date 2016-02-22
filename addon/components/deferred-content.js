@@ -3,6 +3,12 @@ import layout from '../templates/components/deferred-content';
 
 const { Component } = Ember;
 
-export default Component.extend({
+const DeferredContentComponent = Component.extend({
   layout
 });
+
+DeferredContentComponent.reopenClass({
+  positionalParams: ['promise']
+});
+
+export default DeferredContentComponent;
