@@ -158,3 +158,83 @@ test('shows settled component when settled, hide when unresolved', function(asse
       assert.equal(this.$('#settled').length, 1, 'display the settled component');
     });
 });
+
+test('accounts for being torn down - rejected', function(assert) {
+  assert.expect(0);
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+  this.set('show', true);
+
+  this.render(hbs`
+    {{#if show}}
+      {{#deferred-content promise as |d|}}
+        {{#d.rejected}}{{/d.rejected}}
+      {{/deferred-content}}
+    {{/if}}
+  `);
+
+  this.set('show', false);
+  deferred.reject();
+  return wait();
+});
+
+test('accounts for being torn down - fullfilled', function(assert) {
+  assert.expect(0);
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+  this.set('show', true);
+
+  this.render(hbs`
+    {{#if show}}
+      {{#deferred-content promise as |d|}}
+        {{#d.fulfilled}}{{/d.fulfilled}}
+      {{/deferred-content}}
+    {{/if}}
+  `);
+
+  this.set('show', false);
+  deferred.resolve();
+  return wait();
+});
+
+test('accounts for being torn down - pending', function(assert) {
+  assert.expect(0);
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+  this.set('show', true);
+
+  this.render(hbs`
+    {{#if show}}
+      {{#deferred-content promise as |d|}}
+        {{#d.pending}}{{/d.pending}}
+      {{/deferred-content}}
+    {{/if}}
+  `);
+
+  this.set('show', false);
+  deferred.resolve();
+  return wait();
+});
+
+test('accounts for being torn down - settled', function(assert) {
+  assert.expect(0);
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+  this.set('show', true);
+
+  this.render(hbs`
+    {{#if show}}
+      {{#deferred-content promise as |d|}}
+        {{#d.settled}}{{/d.settled}}
+      {{/deferred-content}}
+    {{/if}}
+  `);
+
+  this.set('show', false);
+  deferred.resolve();
+  return wait();
+});
