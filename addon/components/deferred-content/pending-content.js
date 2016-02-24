@@ -4,6 +4,7 @@ import layout from '../../templates/components/deferred-content/pending-content'
 const {
   Component,
   computed,
+  get,
   set
 } = Ember;
 
@@ -14,7 +15,9 @@ export default Component.extend({
       set(this, 'isSettled', false);
 
       promise.finally(() => {
-        set(this, 'isSettled', true);
+        if (!get(this, 'isDestroyed')) {
+          set(this, 'isSettled', true);
+        }
       });
 
       return promise;
