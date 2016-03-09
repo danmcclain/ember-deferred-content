@@ -11,8 +11,8 @@ moduleForComponent('pretty-color', 'Integration | Component | deferred content',
   integration: true
 });
 
-test('shows rejected component when rejected, hide when pending or rejected', function(assert) {
-  assert.expect(5);
+test('shows rejected component when rejected, hide when pending or resolved', function(assert) {
+  assert.expect(10);
 
   let deferred = RSVP.defer();
 
@@ -21,18 +21,23 @@ test('shows rejected component when rejected, hide when pending or rejected', fu
   this.render(hbs`
     {{#deferred-content promise as |d|}}
       {{#d.rejected as |reason|}}<div id="rejected">Rejected: {{reason}}</div>{{/d.rejected}}
+      {{#if d.isRejected}}<div id="rejected-flag">Rejected: {{d.content}}</div>{{/if}}
     {{/deferred-content}}
   `);
 
   assert.equal(this.$('#rejected').length, 0, 'hides the rejected component');
+  assert.equal(this.$('#rejected-flag').length, 0, 'hides the rejected if block');
 
   deferred.reject('failed');
 
   return wait()
     .then(() => {
-      let fulfilledDiv = this.$('#rejected');
-      assert.equal(fulfilledDiv.length, 1, 'shows the rejected component when rejected');
-      assert.equal(fulfilledDiv.text().trim(), 'Rejected: failed', 'yields the rejected value to the component');
+      let rejectedDiv = this.$('#rejected');
+      assert.equal(rejectedDiv.length, 1, 'shows the rejected component when rejected');
+      assert.equal(rejectedDiv.text().trim(), 'Rejected: failed', 'yields the rejected value to the component');
+      let rejectedBlock = this.$('#rejected-flag');
+      assert.equal(rejectedBlock.length, 1, 'shows the rejected if block when rejected');
+      assert.equal(rejectedBlock.text().trim(), 'Rejected: failed', 'makes reject value available at d.content the rejected value to the component');
     })
     .then(() => {
       deferred = RSVP.defer();
@@ -41,16 +46,18 @@ test('shows rejected component when rejected, hide when pending or rejected', fu
     })
     .then(() => {
       assert.equal(this.$('#rejected').length, 0, 'hides the rejected component');
+      assert.equal(this.$('#rejected-flag').length, 0, 'hides the rejected if block');
       deferred.resolve();
       return wait();
     })
     .then(() => {
       assert.equal(this.$('#rejected').length, 0, 'hides the rejected component when fulfilled');
+      assert.equal(this.$('#rejected-flag').length, 0, 'hides the rejected if block when fufilled');
     });
 });
 
 test('shows fulfilled component when fulfilled, hide when pending or rejected', function(assert) {
-  assert.expect(5);
+  assert.expect(10);
 
   let deferred = RSVP.defer();
 
@@ -59,10 +66,12 @@ test('shows fulfilled component when fulfilled, hide when pending or rejected', 
   this.render(hbs`
     {{#deferred-content promise as |d|}}
       {{#d.fulfilled as |content|}}<div id="fulfilled">Fulfilled: {{content}}</div>{{/d.fulfilled}}
+      {{#if d.isFulfilled}}<div id="fulfilled-flag">Fulfilled: {{d.content}}</div>{{/if}}
     {{/deferred-content}}
   `);
 
   assert.equal(this.$('#fulfilled').length, 0, 'hides the fulfilled component');
+  assert.equal(this.$('#fulfilled-flag').length, 0, 'hides the fulfilled if block');
 
   deferred.resolve('hello world');
 
@@ -71,6 +80,9 @@ test('shows fulfilled component when fulfilled, hide when pending or rejected', 
       let fulfilledDiv = this.$('#fulfilled');
       assert.equal(fulfilledDiv.length, 1, 'shows the fulfilled component when fulfilled');
       assert.equal(fulfilledDiv.text().trim(), 'Fulfilled: hello world', 'yields the fulfilled value to the component');
+      let fulfilledBlock = this.$('#fulfilled-flag');
+      assert.equal(fulfilledBlock.length, 1, 'shows the fulfilled if block when fulfilled');
+      assert.equal(fulfilledBlock.text().trim(), 'Fulfilled: hello world', 'makes the resolve value availbe via d.content');
     })
     .then(() => {
       deferred = RSVP.defer();
@@ -79,16 +91,18 @@ test('shows fulfilled component when fulfilled, hide when pending or rejected', 
     })
     .then(() => {
       assert.equal(this.$('#fulfilled').length, 0, 'hides the fulfilled component');
+      assert.equal(this.$('#fulfilled-flag').length, 0, 'hides the fulfilled if block');
       deferred.reject();
       return wait();
     })
     .then(() => {
       assert.equal(this.$('#fulfilled').length, 0, 'hides the fulfilled component when rejected');
+      assert.equal(this.$('#fulfilled-flag').length, 0, 'hides the fulfilled if block when rejected');
     });
 });
 
 test('shows pending component when unresolved, hide when fulfilled or rejected', function(assert) {
-  assert.expect(4);
+  assert.expect(8);
 
   let deferred = RSVP.defer();
 
@@ -97,16 +111,19 @@ test('shows pending component when unresolved, hide when fulfilled or rejected',
   this.render(hbs`
     {{#deferred-content promise as |d|}}
       {{#d.pending}}<div id="pending">Pending</div>{{/d.pending}}
+      {{#if d.isPending}}<div id="pending-flag">Pending</div>{{/if}}
     {{/deferred-content}}
   `);
 
   assert.equal(this.$('#pending').length, 1, 'display the pending component');
+  assert.equal(this.$('#pending-flag').length, 1, 'display the pending if block');
 
   deferred.resolve();
 
   return wait()
     .then(() => {
       assert.equal(this.$('#pending').length, 0, 'hide the pending component when resolving');
+      assert.equal(this.$('#pending-flag').length, 0, 'hide the pending if block when resolving');
     })
     .then(() => {
       deferred = RSVP.defer();
@@ -115,16 +132,18 @@ test('shows pending component when unresolved, hide when fulfilled or rejected',
     })
     .then(() => {
       assert.equal(this.$('#pending').length, 1, 'display the pending component');
+      assert.equal(this.$('#pending-flag').length, 1, 'display the pending if block');
       deferred.reject();
       return wait();
     })
     .then(() => {
       assert.equal(this.$('#pending').length, 0, 'hide the pending component when rejecting');
+      assert.equal(this.$('#pending-flag').length, 0, 'hide the pending if block when rejecting');
     });
 });
 
 test('shows settled component when settled, hide when unresolved', function(assert) {
-  assert.expect(4);
+  assert.expect(8);
 
   let deferred = RSVP.defer();
 
@@ -133,16 +152,19 @@ test('shows settled component when settled, hide when unresolved', function(asse
   this.render(hbs`
     {{#deferred-content promise as |d|}}
       {{#d.settled}}<div id="settled">Settled</div>{{/d.settled}}
+      {{#if d.isSettled}}<div id="settled-flag">Settled</div>{{/if}}
     {{/deferred-content}}
   `);
 
-  assert.equal(this.$('#settled').length, 0, 'hide the settled component when resolving');
+  assert.equal(this.$('#settled').length, 0, 'hide the settled component when pending');
+  assert.equal(this.$('#settled-flag').length, 0, 'hide the settled if block when pending');
 
   deferred.resolve();
 
   return wait()
     .then(() => {
-      assert.equal(this.$('#settled').length, 1, 'display the settled component');
+      assert.equal(this.$('#settled').length, 1, 'display the settled component when resolved');
+      assert.equal(this.$('#settled-flag').length, 1, 'display the settled if block when resolved');
     })
     .then(() => {
       deferred = RSVP.defer();
@@ -150,12 +172,14 @@ test('shows settled component when settled, hide when unresolved', function(asse
       return wait();
     })
     .then(() => {
-      assert.equal(this.$('#settled').length, 0, 'hide the settled component when rejecting');
+      assert.equal(this.$('#settled').length, 0, 'hide the settled component when pending');
+      assert.equal(this.$('#settled-flag').length, 0, 'hide the settled if block when pending');
       deferred.reject();
       return wait();
     })
     .then(() => {
-      assert.equal(this.$('#settled').length, 1, 'display the settled component');
+      assert.equal(this.$('#settled').length, 1, 'display the settled component when rejected');
+      assert.equal(this.$('#settled-flag').length, 1, 'display the settled if block when rejected');
     });
 });
 
