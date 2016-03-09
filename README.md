@@ -30,6 +30,26 @@ ember install ember-deferred-content
       Could not load comments: {{reason}}
     {{/d.rejected}}
   {{/deferred-content}}
+
+  {{! or using ifs}}
+  {{#deferred-content promise=post.comments as |d|}}
+    {{#if d.isSettled}}
+      <h2>Comments</h2>
+    {{/if}}
+    {{#if d.isPending}}
+      <img src="spinner.gif">
+    {{/if}}
+    {{#if d.isFulfilled}}
+      <ul>
+        {{#each d.content as |comment|}}
+          <li>{{comment.author}} said: {{comment.body}}
+        {{/each}}
+      </ul>
+    {{/if}}
+    {{#if d.isRejected}}
+      Could not load comments: {{d.content}}
+    {{/if}}
+  {{/deferred-content}}
 ```
 
 `ember-deferred-content` takes the promise you need to resolve to show
@@ -44,6 +64,14 @@ content during the different states of your promise
    resolved; yields the result of the promise
  - `d.rejected`: displays the content only when the promise is rejected;
    yields the result of the promise
+
+It also sets a series of flags:
+
+ - `d.isSettled`: true if the promise is resolved or rejected
+ - `d.isPending`: true until the promise is resolved or rejected
+ - `d.isFulfilled`: true if the promise is resolved
+ - `d.isRejected`: true if the promise is rejected
+ - `d.content`: the return value of the resolved/rejected state
 
 ## Compatibility
 

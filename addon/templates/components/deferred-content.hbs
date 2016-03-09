@@ -1,6 +1,11 @@
-{{yield (hash pending=(component 'deferred-content/pending-content' promise=promise)
-              fulfilled=(component 'deferred-content/fulfilled-content' promise=promise)
-              rejected=(component 'deferred-content/rejected-content' promise=promise)
-              settled=(component 'deferred-content/settled-content' promise=promise)
+{{yield (hash pending=(component 'deferred-content/pending-content' isSettled=isSettled)
+              fulfilled=(component 'deferred-content/fulfilled-content' isFulfilled=isFulfilled result=content)
+              rejected=(component 'deferred-content/rejected-content' isRejected=isRejected result=content)
+              settled=(component 'deferred-content/settled-content' isSettled=isSettled)
+              isPending=isPending
+              isSettled=isSettled
+              isRejected=isRejected
+              isFulfilled=isFulfilled
+              content=content
         )
 }}
