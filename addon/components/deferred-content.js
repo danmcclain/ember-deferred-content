@@ -12,6 +12,7 @@ const {
 const DeferredContentComponent = Component.extend({
   layout,
   isPending: not('isSettled'),
+  tagName:'',
   promise: computed({
     set(key, promise) {
       set(this, 'isRejected', false);
