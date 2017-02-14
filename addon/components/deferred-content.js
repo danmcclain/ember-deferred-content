@@ -2,6 +2,7 @@ import Ember from 'ember';
 import layout from '../templates/components/deferred-content';
 
 const {
+  assert,
   Component,
   computed,
   computed: { not },
@@ -15,6 +16,7 @@ const DeferredContentComponent = Component.extend({
   tagName:'',
   promise: computed({
     set(key, promise) {
+      assert('You must pass a promise to ember-deferred-content', typeof promise.then === 'function');
       set(this, 'isRejected', false);
       set(this, 'isFulfilled', false);
       set(this, 'isSettled', false);

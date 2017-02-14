@@ -262,3 +262,21 @@ test('accounts for being torn down - settled', function(assert) {
   deferred.resolve();
   return wait();
 });
+
+test('raises assertion when passed argument that is not promise', function(assert) {
+  assert.expect(1);
+  this.set('promise', { data: 'I\'m a POJO!' });
+
+  try {
+    Ember.run(() => {
+      this.render(hbs`{{deferred-content promise}}`);
+    });
+  } catch (e) {
+    let errorMessage = 'Assertion Failed: You must pass a promise to ember-deferred-content';
+    assert.equal(
+      e.message,
+      errorMessage,
+      'Raises assertion when argument provided to component is not a promise'
+    );
+  }
+});
