@@ -279,3 +279,30 @@ skip('raises assertion when passed argument that is not promise', function(asser
     );
   }
 });
+
+test('should not render empty wrapper DOM nodes', function (assert) {
+  assert.expect(1);
+
+  let deferred = RSVP.defer();
+
+  this.set('promise', deferred.promise);
+
+  this.render(hbs`{{#deferred-content promise as |d|}}
+    {{#d.settled}}
+    {{/d.settled}}
+    {{#d.pending}}
+    {{/d.pending}}
+    {{#d.fulfilled}}
+    {{/d.fulfilled}}
+    {{#d.rejected}}
+    {{/d.rejected}}
+  {{/deferred-content}}`);
+
+  deferred.resolve();
+
+  return wait()
+    .then(() => {
+      assert.equal(this.$().children().length, 0);
+    });
+});
+
