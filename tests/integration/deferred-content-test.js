@@ -272,10 +272,9 @@ test('raises assertion when passed argument that is not promise', function(asser
       this.render(hbs`{{deferred-content promise}}`);
     });
   } catch (e) {
-    let errorMessage = 'You must pass a promise to ember-deferred-content';
-    assert.notEqual(
-      e.message.indexOf(errorMessage)
-      -1,
+    let errorMessageRegex = /You must pass a promise to ember-deferred-content/i;
+    assert.ok(
+      errorMessageRegex.test(e.message),
       'Raises assertion when argument provided to component is not a promise'
     );
   }
