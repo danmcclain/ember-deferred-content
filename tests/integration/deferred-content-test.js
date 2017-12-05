@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
+import { moduleForComponent, test, skip } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -263,7 +263,7 @@ test('accounts for being torn down - settled', function(assert) {
   return wait();
 });
 
-test('raises assertion when passed argument that is not promise', function(assert) {
+skip('raises assertion when passed argument that is not promise', function(assert) {
   assert.expect(1);
   this.set('promise', { data: 'I\'m a POJO!' });
 
