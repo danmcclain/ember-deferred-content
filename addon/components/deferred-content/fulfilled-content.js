@@ -4,5 +4,6 @@ import layout from '../../templates/components/deferred-content/fulfilled-conten
 const { Component } = Ember;
 
 export default Component.extend({
-  layout
+  layout,
+  tagName: ''
 });
