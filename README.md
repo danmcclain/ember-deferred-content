@@ -1,5 +1,7 @@
 # ember-deferred-content
 ## Fancy pants handling of async content
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/danmcclain/ember-deferred-content.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/danmcclain/ember-deferred-content.svg?branch=master)](https://travis-ci.org/danmcclain/ember-deferred-content)
 [![npm version](https://badge.fury.io/js/ember-deferred-content.svg)](https://badge.fury.io/js/ember-deferred-content)
 
