@@ -1,6 +1,6 @@
 {
   "name": "ember-deferred-content",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Fancy pants handling of async content",
   "repository": "https://github.com/danmcclain/ember-deferred-content",
   "bugs": "https://github.com/danmcclain/ember-deferred-content/issues",
