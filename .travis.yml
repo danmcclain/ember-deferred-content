@@ -5,8 +5,9 @@ node_js:
   # so that your addon works for all apps
   - "4"
 
-sudo: false
+sudo: required
 dist: trusty
+
 branches:
   only:
     # This is where pull requests from "bors r+" are built.
