@@ -1,14 +1,8 @@
-import Ember from 'ember';
+import { assert } from '@ember/debug';
+import Component from '@ember/component';
+import { computed, get, set } from '@ember/object';
+import { not } from '@ember/object/computed';
 import layout from '../templates/components/deferred-content';
-
-const {
-  assert,
-  Component,
-  computed,
-  computed: { not },
-  get,
-  set
-} = Ember;
 
 const DeferredContentComponent = Component.extend({
   layout,
