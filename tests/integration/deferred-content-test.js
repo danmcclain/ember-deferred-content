@@ -1,11 +1,8 @@
-import Ember from 'ember';
 import { moduleForComponent, test, skip } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
-
-const {
-  RSVP
-} = Ember;
+import RSVP from 'rsvp';
+import { run } from '@ember/runloop';
 
 moduleForComponent('pretty-color', 'Integration | Component | deferred content', {
   integration: true
@@ -268,7 +265,7 @@ skip('raises assertion when passed argument that is not promise', function(asser
   this.set('promise', { data: 'I\'m a POJO!' });
 
   try {
-    Ember.run(() => {
+    run(() => {
       this.render(hbs`{{deferred-content promise}}`);
     });
   } catch (e) {
